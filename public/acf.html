@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Account Collection Flow</title>
+    <meta name="description" content="A demo of a payment on MT" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="mt.css" />
+  </head>
+  <body>
+    <!-- Display a payment form -->
+    <form action="/api/create-cp-acf" method="POST">
+      <label for="Name">Name:</label><br>
+      <input type="text" id="name" name="name"><br>
+      <div>Payment types:</div>
+      <input type="checkbox" id="rails1" name="rails[]" value="ach">
+      <label for="rails1"> ACH</label><br>
+      <input type="checkbox" id="rails2" name="rails[]" value="wire">
+      <label for="rails2"> Wire</label><br>
+      <input type="checkbox" id="rails3" name="rails[]" value="check">
+      <label for="rails3"> Check</label>
+      <br>
+      <button id="submit">
+        <div class="spinner hidden" id="spinner"></div>
+        <span id="button-text">Submit</span>
+      </button>
+    </form>
+  </body>
+</html>

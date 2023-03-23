@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://cdn.moderntreasury.com/js/v1/modern-treasury.js"></script>
+  <script src="/config"></script>
+  <body>
+    <div id="put-iframe-here"></div>
+  </body>
+  <script>
+    // Initialize Modern Treasury library
+    const mt = ModernTreasury(window.mtConfig.publishableKey);
+
+    // Create the Embeddable Flow
+    const embeddableFlow = mt.createEmbeddableFlow({
+      clientToken: window.mtConfig.clientToken,
+      onSuccess: (result) => { console.log("Success: ", result) },
+      onError: (error) => { console.log("Error: ", error) },
+    });
+    
+    // Mount the Embeddable Flow
+    embeddableFlow.mount("#put-iframe-here")
+  </script>
+</html>
