@@ -1,0 +1,19 @@
+version: 1.0
+runtime: python3 
+build:
+  commands:
+    build:
+      - pip install -r api/python/requirements.txt
+run: 
+  command: flask run -p 9001 --host=0.0.0.0
+  network: 
+    port: 9001
+  env:
+    - name: FLASK_APP
+      value: "api/python/app"
+    - name: MT_ORG_ID
+      value: "<MT_ORG_ID>"
+    - name: MT_PUB_KEY
+      value: "<MT_PUB_KEY>"
+    - name: MT_API_KEY
+      value: "<MT_API_KEY>"

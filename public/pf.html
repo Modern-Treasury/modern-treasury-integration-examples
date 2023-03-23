@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Payment Flow</title>
+    <meta name="description" content="A demo of a payment on MT" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="mt.css" />
+  </head>
+  <body>
+    <!-- Display a payment form -->
+    <form action="/api/create-cp-pf" method="POST">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name"><br>
+      <label for="direction">Direction:</label>
+      <select name="direction" id="direction">
+        <option value="credit">Credit</option>
+        <option value="debit">Debit</option>      
+      </select>
+      <br>
+      <label for="currency">Currency:</label>
+      <select name="currency" id="currency">
+        <option value="USD">USD</option>
+        <option value="CAD">CAD</option>
+      </select>
+      <br>
+      <label for="amount">Amount:</label><br>
+      <input type="text" id="amount" name="amount"><br>
+      <br>
+      <label for="originating_account_id">Originating Account ID:</label><br>
+      <input type="text" id="originating_account_id" name="originating_account_id"><br>
+      <br>
+      <button id="submit">
+        <div class="spinner hidden" id="spinner"></div>
+        <span id="button-text">Submit</span>
+      </button>
+    </form>
+  </body>
+</html>
