@@ -22,6 +22,7 @@ This code is intended as an example implementation and should not be used direct
 
 - [Python](api/python)
 - [Node](api/node)
+- [Go](api/go)
 
 #### Configuring the examples
 
@@ -32,6 +33,7 @@ Note that each API example in this code will retrieve configuration values from 
 | MT_ORG_ID | The [ID][api-keys]  of your Modern Treasury organization |
 | MT_API_KEY | Your [private API key][api-keys] |
 | MT_PUB_KEY | Your [publishable API key][publishable-keys] |
+| FS_KEY | Used to encrypt session storage
 
 
 ### How to run
