@@ -93,12 +93,38 @@ def create_cp_pf():
         print(e.status_code)
         print(e.response)
 
+# POST route to handle a new user onboarding form
+@app.route('/api/create-uo', methods=['POST'])
+def create_uo():
+    try:
+        # Create a Counterparty with the name given in the form
+        user_onboarding = modern_treasury.useronboardings.create(
+            flow_alias=request.form['onboarding_type'],
+        )
+        
+        session['user_onboarding_id'] = user_onboarding.id
+        return redirect(url_for('uo_embed'))
+        
+    except modern_treasury.APIConnectionError as e:
+        print("The server could not be reached")
+        print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+    except modern_treasury.RateLimitError as e:
+        print("A 429 status code was received; we should back off a bit.")
+    except modern_treasury.APIStatusError as e:
+        print("Another non-200-range status code was received")
+        print(e.status_code)
+        print(e.response)
+
 @app.route('/embed')
 def embed():
     return redirect('embed.html')
+
+@app.route('/uo_embed')
+def embed():
+    return redirect('uo_embed.html')
 
 
 # This endpoint provides configuration to modern-treasury-js
 @app.route("/config", methods=['GET'])
 def config_js():
-  return Response("window.mtConfig = { publishableKey: '" + PUB_KEY + "', clientToken: '" + session['client_token'] + "'}", mimetype='application/javascript')
+  return Response("window.mtConfig = { publishableKey: '" + PUB_KEY + "', clientToken: '" + session['client_token'] + "', userOnboardingId: '" + session['user_onboarding_id'] + "' }", mimetype='application/javascript')
