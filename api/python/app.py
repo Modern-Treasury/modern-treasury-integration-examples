@@ -6,6 +6,7 @@ import json
 import os
 from dotenv import load_dotenv
 from modern_treasury import ModernTreasury
+import requests
 load_dotenv(verbose=True)
 ORG_ID = os.environ.get("MT_ORG_ID")
 API_KEY = os.environ.get("MT_API_KEY")
@@ -97,30 +98,19 @@ def create_cp_pf():
 @app.route('/api/create-uo', methods=['POST'])
 def create_uo():
     try:
-        # Create a Counterparty with the name given in the form
-        user_onboarding = modern_treasury.useronboardings.create(
-            flow_alias=request.form['onboarding_type'],
-        )
-        
-        session['user_onboarding_id'] = user_onboarding.id
+        user_onboarding = requests.post("https://app.moderntreasury.com/api/user_onboardings", auth=(ORG_ID, API_KEY), json = { "flow_alias": request.form['onboarding_type'] })
+        session['user_onboarding_id'] = user_onboarding.json()["id"]
         return redirect(url_for('uo_embed'))
         
-    except modern_treasury.APIConnectionError as e:
-        print("The server could not be reached")
-        print(e.__cause__)  # an underlying Exception, likely raised within httpx.
-    except modern_treasury.RateLimitError as e:
-        print("A 429 status code was received; we should back off a bit.")
-    except modern_treasury.APIStatusError as e:
-        print("Another non-200-range status code was received")
-        print(e.status_code)
-        print(e.response)
+    except requests.exceptions.RequestException as e:
+        print(e)
 
 @app.route('/embed')
 def embed():
     return redirect('embed.html')
 
 @app.route('/uo_embed')
-def embed():
+def uo_embed():
     return redirect('uo_embed.html')
 
 
