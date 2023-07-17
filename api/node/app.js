@@ -4,17 +4,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const modernTreasury = require('modern-treasury');
 const sessions = require('express-session');
-
 const fetch = require('node-fetch');
-
 const base64 = require('base-64');
 
 var randtoken = require('rand-token');
 
-
-
 require('dotenv').config()
-
 
 // These are the various configuration values used in this example. They are
 // pulled from the ENV for ease of use, but can be defined directly or stored
@@ -43,7 +38,6 @@ app.use(sessions({
 }));
 
 var session;
-
 
 // POST route to handle a new account collection form
 app.post('/api/create-cp-acf', async function (req, res) {
@@ -104,16 +98,13 @@ app.post('/api/create-uo', async function (req, res) {
         "Authorization": `Basic ${base64.encode(`${MT_ORG_ID}:${MT_API_KEY}`)}`
       }),
       body: JSON.stringify({flow_alias: req.body['onboarding_type']})
-    }).then(response => {
-      if (!response.ok) throw new Error(response.status);
-      //return response.json();
-      session=req.session;
-      session.user_onboarding_id=response.json()["id"];
     })
-
-
-
-    res.redirect('/uo_embed.html');
+      .then((response) => response.json())
+      .then((data) => {
+        session=req.session;
+        session.user_onboarding_id=data["id"];
+        res.redirect('/uo_embed.html');
+    });
   }
 
   catch (err) {
@@ -122,11 +113,10 @@ app.post('/api/create-uo', async function (req, res) {
 });
 
 
-
 // This endpoint provides configuration to modern-treasury-js
 app.get('/config', function (req, res) {
   res.setHeader('Content-Type', 'application/javascript');
-  res.send(`window.mtConfig = { publishableKey: '${PUB_KEY}',` + `clientToken: '${session.client_token}'` + `userOnboardingId: + '${session.user_onboarding_id}'` `}`);
+  res.send(`window.mtConfig = { publishableKey: '${PUB_KEY}',` + `clientToken: '${session.client_token}',` + `userOnboardingId: '${session.user_onboarding_id}'` + `}`);
 });
 
 // Mounts express.static to render example forms
