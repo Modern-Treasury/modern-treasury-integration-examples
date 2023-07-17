@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.moderntreasury.com/compliance/v1/mt-onboarding.js"></script>
+    <script src="/config"></script>
+    <script type="application/ecmascript">
+      function openIframe() {
+        const onSuccess = function (event) {
+          // handle success event (e.g. move user to the next step of your flow following KYC)
+        };
+        
+        const onError = function (event) {
+          // handle error event (e.g. open the iframe again)
+        };
+        
+        const onCancel = function (event) {
+          // handle cancel event (e.g. email the user later to try and reactivate them)
+          // note: this event will not be triggered if the user closes their browser.
+        };
+        
+        const userOnboardingId = window.mtConfig.userOnboardingId;
+
+        window.onboardingInstance = MTOnboarding.open({
+          userOnboardingId: userOnboardingId, // required
+          onSuccess: onSuccess, // optional
+          onError: onError, // optional
+          onClose: onCancel, // optional
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <button onclick="openIframe()">
+      Open
+      </button>
+  </body>
+</html>

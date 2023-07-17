@@ -18,6 +18,10 @@ This code is intended as an example implementation and should not be used direct
 
 - [Payment form example](public/pf.html)
 
+### User Onboarding form example
+
+- [User Onboarding form example](public/onboarding.html)
+
 ### API usage examples
 
 - [Python](api/python)
