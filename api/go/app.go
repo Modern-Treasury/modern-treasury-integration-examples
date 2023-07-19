@@ -10,6 +10,9 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 	"strconv"
 	"github.com/gorilla/sessions"
+	"io"
+	"strings"
+	"encoding/json"
 )
 
 // This example utilizes a range of configuration values. These values are conveniently fetched from the ENV for simplicity, but you also have the option to define them directly or store them in an alternative location.
@@ -114,6 +117,66 @@ func createCpPf(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//POST route to handle a user onboarding form
+func createUo(w http.ResponseWriter, r *http.Request) {
+	session, err := store.Get(r, "modern-treasury")
+	 if err != nil {
+	 	http.Error(w, err.Error(), http.StatusInternalServerError)
+	 	return
+	 }
+	if r.Method != "POST" {
+		http.Error(w, "Invalid request method.", 405)
+	}
+
+	r.ParseForm()
+
+	url := "https://app.moderntreasury.com/api/user_onboardings"
+
+	payload := strings.NewReader(fmt.Sprintf("{\"flow_alias\" : \"%s\"}", r.PostFormValue("onboarding_type")))
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("content-type", "application/json")
+	req.SetBasicAuth(ORG_ID, API_KEY)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	//fmt.Println(string(body))
+
+	var data map[string]interface{}
+	err = json.Unmarshal([]byte(body), &data)
+	if err != nil {
+		fmt.Printf("could not unmarshal json: %s\n", err)
+		return
+	}
+
+	id, ok := data["id"]
+	if !ok {
+		fmt.Printf("id does not exist\n")
+		return
+	}
+	id, ok = id.(string)
+	if !ok {
+		fmt.Printf("id is not a string\n")
+		return
+	}
+
+	//Set some session values.
+	session.Values["userOnboardingId"] = id
+	// Save it before we write to the response/return from the handler.
+	err = session.Save(r, w)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/uo_embed.html", 303)
+
+}
+
 func config(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/javascript")
 
@@ -123,7 +186,7 @@ func config(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := fmt.Sprintf("window.mtConfig = { publishableKey: '%s' , clientToken: '%s'}", PUB_KEY, session.Values["clientToken"])
+	response := fmt.Sprintf("window.mtConfig = { publishableKey: '%s' , clientToken: '%s', userOnboardingId: '%s'}", PUB_KEY, session.Values["clientToken"], session.Values["userOnboardingId"])
 
 	fmt.Fprintf(w, response)
 }
@@ -141,6 +204,7 @@ func main() {
 
 	http.HandleFunc("/api/create-cp-acf", createCpAcf)
 	http.HandleFunc("/api/create-cp-pf", createCpPf)
+	http.HandleFunc("/api/create-uo", createUo)
 
 	http.ListenAndServe(":9001", nil)
 }
