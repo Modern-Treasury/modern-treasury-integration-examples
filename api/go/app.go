@@ -13,6 +13,7 @@ import (
 	"io"
 	"strings"
 	"encoding/json"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 // This example utilizes a range of configuration values. These values are conveniently fetched from the ENV for simplicity, but you also have the option to define them directly or store them in an alternative location.

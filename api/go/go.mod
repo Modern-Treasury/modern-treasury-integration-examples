@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/Modern-Treasury/modern-treasury-go v0.0.0-20230517035638-e51afe3165ef
 	github.com/gorilla/sessions v1.2.1
+	github.com/joho/godotenv v1.5.1
 )
 
 require (
