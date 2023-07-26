@@ -117,4 +117,7 @@ def uo_embed():
 # This endpoint provides configuration to modern-treasury-js
 @app.route("/config", methods=['GET'])
 def config_js():
-  return Response("window.mtConfig = { publishableKey: '" + PUB_KEY + "', clientToken: '" + session['client_token'] + "', userOnboardingId: '" + session['user_onboarding_id'] + "' }", mimetype='application/javascript')
+    if session.get('client_token') is not None:
+        return Response("window.mtConfig = { publishableKey: '" + PUB_KEY + "', clientToken: '" + session.get('client_token') + "' }", mimetype='application/javascript')
+    if session.get('user_onboarding_id') is not None:
+        return Response("window.mtConfig = { userOnboardingId: '" + session.get('user_onboarding_id') + "' }", mimetype='application/javascript')     
