@@ -6,3 +6,5 @@ api/node/app2.js
 api/node/node_modules/
 *.bak
 .DS_Store
+/api/java/.java-version
+/api/java/target/*
