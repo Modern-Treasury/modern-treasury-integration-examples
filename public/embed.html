@@ -8,10 +8,16 @@
   <script>
     // Initialize Modern Treasury library
     const mt = ModernTreasury(window.mtConfig.publishableKey);
+    const appearanceVariables = {
+      colorPrimary: "#377e62",
+      colorBackground: "#f7f8fa",
+      fontFamily: "Roboto Serif",
+    };
 
     // Create the Embeddable Flow
     const embeddableFlow = mt.createEmbeddableFlow({
       clientToken: window.mtConfig.clientToken,
+      variables: appearanceVariables,
       onSuccess: (result) => { console.log("Success: ", result) },
       onError: (error) => { console.log("Error: ", error) },
     });
