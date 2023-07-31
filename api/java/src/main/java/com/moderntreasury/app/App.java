@@ -16,6 +16,15 @@ import static spark.debug.DebugScreen.enableDebugScreen;
 import java.util.List;
 import java.util.Arrays;
 
+import org.json.JSONObject;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.Credentials;
+
 public class App {
   @SuppressWarnings("deprecation")
   public static void main(String[] args) {
@@ -94,10 +103,39 @@ public class App {
       return res;
     });
 
+    /* POST route to handle a new user onboarding form */
+    post("/api/create-uo", (req, res) -> {
+
+      /* Create a user onboarding */
+      String credential = Credentials.basic(mtOrgId, apiKey);
+      OkHttpClient onboardingClient = new OkHttpClient();
+
+      MediaType mediaType = MediaType.parse("application/json");
+      RequestBody body = RequestBody.create(mediaType, "{\"flow_alias\":\" " + req.queryParams("onboarding_type") + "\"}");
+      Request request = new Request.Builder()
+        .url("https://app.moderntreasury.com/api/user_onboardings")
+        .post(body)
+        .addHeader("content-type", "application/json")
+        .addHeader("authorization", credential)
+        .build();
+
+      Response response = onboardingClient.newCall(request).execute();
+
+      String jsonString = response.body().string();
+      JSONObject obj = new JSONObject(jsonString);
+      String id = obj.getString("id");
+
+      req.session();
+      req.session().attribute("user_onboarding_id",id);
+      res.redirect("/uo_embed.html");
+
+      return res;
+    });
+
     /* This endpoint provides configuration to modern-treasury-js */
     get("/config", (req, res) -> {
       res.type("application/javascript");
-      res.body("window.mtConfig = { publishableKey: '"+ publicKey + "', clientToken: '" + req.session().attribute("client_token") + "' }");
+      res.body("window.mtConfig = { publishableKey: '"+ publicKey + "', clientToken: '" + req.session().attribute("client_token") + "', userOnboardingId: '" + req.session().attribute("user_onboarding_id") + "' }");
       return res.body();
     });
   }
