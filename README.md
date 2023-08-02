@@ -27,6 +27,7 @@ This code is intended as an example implementation and should not be used direct
 - [Python](api/python)
 - [Node](api/node)
 - [Go](api/go)
+- [Java](api/java)
 
 #### Configuring the examples
 
