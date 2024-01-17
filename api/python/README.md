@@ -23,5 +23,5 @@ framework.
   ```
 2. Open [http://localhost:9001](http://localhost:9001)
 
-[express]: https://flask.palletsprojects.com/en/2.2.x/
+[flask]: https://flask.palletsprojects.com/en/2.2.x/
 [client]: https://github.com/Modern-Treasury/modern-treasury-python
