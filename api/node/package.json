@@ -13,7 +13,6 @@
     "express-session": "^1.17.3",
     "modern-treasury": "^1.6.0",
     "ms": "^2.0.0",
-    "node-fetch": "^2.6.12",
     "on-headers": "^1.0.2",
     "parseurl": "^1.3.3",
     "rand-token": "^1.0.1",

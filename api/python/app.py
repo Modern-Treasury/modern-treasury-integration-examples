@@ -6,7 +6,7 @@ import json
 import os
 from dotenv import load_dotenv
 from modern_treasury import ModernTreasury
-import requests
+
 load_dotenv(verbose=True)
 ORG_ID = os.environ.get("MT_ORG_ID")
 API_KEY = os.environ.get("MT_API_KEY")
@@ -94,17 +94,6 @@ def create_cp_pf():
         print(e.status_code)
         print(e.response)
 
-# POST route to handle a new user onboarding form
-@app.route('/api/create-uo', methods=['POST'])
-def create_uo():
-    try:
-        user_onboarding = requests.post("https://app.moderntreasury.com/api/user_onboardings", auth=(ORG_ID, API_KEY), json = { "flow_alias": request.form['onboarding_type'] })
-        session['user_onboarding_id'] = user_onboarding.json()["id"]
-        return redirect(url_for('uo_embed'))
-        
-    except requests.exceptions.RequestException as e:
-        print(e)
-
 @app.route('/embed')
 def embed():
     return redirect('embed.html')
@@ -118,6 +107,4 @@ def uo_embed():
 @app.route("/config", methods=['GET'])
 def config_js():
     if session.get('client_token') is not None:
-        return Response("window.mtConfig = { publishableKey: '" + PUB_KEY + "', clientToken: '" + session.get('client_token') + "' }", mimetype='application/javascript')
-    if session.get('user_onboarding_id') is not None:
-        return Response("window.mtConfig = { userOnboardingId: '" + session.get('user_onboarding_id') + "' }", mimetype='application/javascript')     
+        return Response("window.mtConfig = { publishableKey: '" + PUB_KEY + "', clientToken: '" + session.get('client_token') + "' }", mimetype='application/javascript')  

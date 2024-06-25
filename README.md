@@ -18,10 +18,6 @@ This code is intended as an example implementation and should not be used direct
 
 - [Payment form example](public/pf.html)
 
-### User Onboarding form example
-
-- [User Onboarding form example](public/onboarding.html)
-
 ### API usage examples
 
 - [Python](api/python)
@@ -60,9 +56,9 @@ To run this code locally, follow these steps:
 3. Refer to the startup instructions provided in one of the [API usage examples](api) mentioned above to get started.
 
 
-#### Deploy Immediately to AWS App Runner
+#### Deploy to AWS App Runner
 
-You can swiftly deploy this repository on [AWS App Runner][apprunner] by utilizing the provided [Python example](api/python) and [configuration file](apprunner.yaml). If you opt for this deployment method, you are welcome to remove the other language backends from your cloned repository. This will streamline your setup and focus solely on the Python implementation.
+You can deploy this repository on [AWS App Runner][apprunner] by utilizing the provided [Python example](api/python) and [configuration file](apprunner.yaml). If you opt for this deployment method, you are welcome to remove the other language backends from your cloned repository. This will streamline your setup and focus solely on the Python implementation.
 
 ### Contributing
 
