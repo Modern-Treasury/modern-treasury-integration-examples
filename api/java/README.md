@@ -23,7 +23,7 @@ The Modern Treasury Java library is distributed via [Maven Central](https://cent
 <dependency>
         <groupId>com.moderntreasury</groupId>
         <artifactId>modern-treasury-java</artifactId>
-        <version>1.1.0</version>
+        <version>2.14.0</version>
 </dependency>
 ```
 
